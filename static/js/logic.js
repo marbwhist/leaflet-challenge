@@ -1,7 +1,7 @@
 var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 
 // Perform a GET request to the query URL
-d3.json(queryUrl, function(data) {
+d3.json(queryUrl, function (data) {
     // Once we get a response, send the data.features object to the createFeatures function
     createFeatures(data.features);
   });
@@ -18,16 +18,9 @@ d3.json(queryUrl, function(data) {
   // Create a GeoJSON layer containing the features array on the earthquakeData object
   // Run the onEachFeature function once for each piece of data in the array
   var earthquakes = L.geoJSON(earthquakeData, {
-    onEachFeature: onEachFeature
-  });
-
-  // Sending our earthquakes layer to the createMap function
-  createMap(earthquakes);
-}
-var magnitude = L.geoJSON(earthquakeData, {
     onEachFeature: onEachFeature,
-    
-    for (var i = 0; i < features.properties.mag; i++) {
+    pointToLayer: function(feature, latlng) {
+      for (var i = 0; i < features.properties.mag; i++) {
 
         
         var color = "";
@@ -43,9 +36,15 @@ var magnitude = L.geoJSON(earthquakeData, {
         else {
           color = "red";
         }
-}
+}};
 
-function createMap(magnitude) {
+  createMap(earthquakes); 
+
+  }
+
+  // Sending our earthquakes layer to the createMap function
+  function createMap(earthquakes) {
+
 
   // Define streetmap and darkmap layers
   var streetmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
@@ -94,4 +93,4 @@ function createMap(magnitude) {
   }).addTo(myMap);
 }
 
-  
+
